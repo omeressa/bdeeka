@@ -10,16 +10,15 @@ class TestCase{
 public:
   
 string name;
-ostream& cerrent_err;
+ostream& current_err;
 int Failed_tests = 0;
 int Passed_tests = 0;
 int All = 0;
   
 	
-TestCase(string other_name, ostream& other_current_err){
-   this->current_err = other_current_err;
-   this->name = other_name;
-}
+TestCase(string s, ostream& other):current_err(other){
+			this->name=s;
+		}
 		
     
 template <typename T> TestCase& check_equal(T x,T y){
@@ -42,7 +41,7 @@ template <typename T> TestCase& check_different(T x,T y){
 	   else{
        All++;
 			 Failed_tests++;
-			 cout<<name<<": Failure in test #"<< All<<" "<<x<<" "<<is equal"<<" "<<y<<" !"<<endl;
+			 cout<<name<<": Failure in test #"<< All<<" "<<x<<" "<<"is equal"<<" "<<y<<" !"<<endl;
 			}		
 	return *this;	
 }
@@ -50,7 +49,7 @@ template <typename T> TestCase& check_different(T x,T y){
 template <typename T> TestCase& check_output(T x, string other){
 	stringstream in;
 	in<<x;
-	if(buf.str().compare(s)==0){
+	if(in.str().compare(other)==0){
      All++;
 	   Passed_tests++;
     }
@@ -77,8 +76,9 @@ template <typename X,typename Y,typename Z> TestCase& check_function(Z function,
 		return *this;	
 }
     
-void TestCase& print(){
-	current_err<<name<<": "<<Failed_tests<<" "<<failed"<<", "<<Passed_tests<<" "<<passed"<<", "<<All<<" "<<"total."<<endl;
+TestCase& print(){
+	current_err<<name<<": "<<Failed_tests<<" "<<"failed"<<", "<<Passed_tests<<" "<<"passed"<<", "<<All<<" "<<"total."<<endl;
 	cout <<"---"<<endl;
+	return *this;
   }
 };
